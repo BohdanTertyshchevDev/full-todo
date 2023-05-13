@@ -5,7 +5,7 @@ module.exports.registrationUser = async(req, res, next) => {
     try {
         const {body, passwordHash} = req;
         const createUser = await User.create({...body, passwordHash});
-        res.status(201).send(createUser);
+        res.status(201).send({data: createUser});
     } catch(error) {
         next(error);
     }
@@ -19,7 +19,7 @@ module.exports.loginUser = async(req, res, next) => {
         });
         if(foundUser) {
             const result = await bcrypt.compare(passwordHash, foundUser.passwordHash);
-            res.status(200).send('Logged in');
+            res.status(200).send({data: foundUser});
         }
     } catch (error) {
         next(error);
