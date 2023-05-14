@@ -51,7 +51,7 @@ const Home = (props) => {
         <main className={styles['form-wrapper']}>
             {state ? <SignUp sendData={getData} /> : <SignIn sendData={getData} />}
         </main>
-        {error && <div className={styles['error-container']}>{error.message}</div>}
+        {error && <div className={styles['error-container']}>{error.err}</div>}
         </div>
     );
 }
