@@ -28,7 +28,7 @@ const Home = (props) => {
     }
 
     const getData = ({callback, values}) => {
-        // setData(userData);
+        //setData(userData);
         callback(values)
             .then(result => {
                 props.sendUser(result.data);
@@ -49,8 +49,8 @@ const Home = (props) => {
 
         <main className={styles['form-wrapper']}>
             {state ? <SignUp sendData={getData} /> : <SignIn sendData={getData} />}
+            {error && <div className={styles['error-container']}>{error.err}</div>}
         </main>
-        {error && <div className={styles['error-container']}>{error.err}</div>}
         </div>
     );
 }

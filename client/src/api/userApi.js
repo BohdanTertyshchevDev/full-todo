@@ -1,4 +1,4 @@
-import CONSTANTS from "../constants";
+import CONSTANTS from '../constants';
 
 export const registerUser = async (data) => {
     const responce = await fetch(`${CONSTANTS.API_BASE}/user/sign-up`, {

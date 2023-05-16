@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
+/*
+- authorId
+- body
+- createdAt
+- deadline
+- status
+*/
+
 const taskSchema = new Schema({
     authorId: {
         type: Schema.Types.ObjectId,
@@ -8,7 +16,7 @@ const taskSchema = new Schema({
     },
     body: {
         type: String,
-        require: true
+        required: true
     },
     createdAt: {
         type: Date,
@@ -16,11 +24,11 @@ const taskSchema = new Schema({
     },
     deadline: {
         type: Date,
-        require: true
+        required: true
     },
     status: {
         type: String,
-        require: true
+        required: true
     }
 })
 

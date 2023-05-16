@@ -6,12 +6,13 @@ const SignIn = (props) => {
 
     const initialValues = {
         email: '',
-        password: ''
+        password: '',
     }
 
     const onSubmit = (values, actions) => {
-        props.sendData({callback: loginUser, values});
-    }
+        props.sendData({callback: loginUser, 
+                                values});
+    } 
 
     return (
         <>
@@ -20,9 +21,9 @@ const SignIn = (props) => {
                 {
                     (props) => (
                         <Form>
-                            <Field name="email" placeholder="Type your email"/>
-                            <Field name="password" placeholder="Type your password"/>
-                            <button type='submit'>Send!</button>
+                            <Field name="email" placeholder="Type your email" />
+                            <Field name="password" placeholder="Type your password" />
+                            <button type="submit">Send!</button>
                         </Form>
                     )
                 }

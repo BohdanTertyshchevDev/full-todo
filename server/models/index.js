@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('./User');
-const {DB} = require('../configs/db');
+const { DB } = require('../configs/db');
 const Task = require('./Task');
 
 mongoose.connect(DB)
