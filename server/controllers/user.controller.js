@@ -1,13 +1,13 @@
 const { User } = require("../models");
 const bcrypt = require('bcrypt');
 const NotFoundError = require('../errors/NotFound');
-const {createToken, verifyToken} = require('../middlewares/createSession');
+const {createToken, verifyToken} = require('../services/tokenService');
 
 module.exports.registrationUser = async(req, res, next) => {
     try {
         const {body, passwordHash} = req;
         const createdUser = await User.create({...body, passwordHash});
-        res.status(201).send({data: createdUser});
+        res.status(200).send({data: createdUser, tokens: {token}});
     } catch (error) {
         next(error);
     }
@@ -25,8 +25,7 @@ module.exports.loginUser = async(req, res, next) => {
                 throw new NotFoundError('Incorrect password');
             }
             const token = await createToken({userId: foundUser._id, email: foundUser.email});
-            console.log(token);
-            // res.status(200).send({data: foundUser})
+            res.status(200).send({data: foundUser, tokens: {token}})
         } else {
             throw new NotFoundError('Incorrect email');
         }
@@ -38,8 +37,11 @@ module.exports.loginUser = async(req, res, next) => {
 module.exports.checkToken = async(req, res, next) => {
     try {
         const {params: {token}} = req;
-        const result = await verifyToken(token);
-        console.log(result);
+        const payload = await verifyToken(token);
+        const foundUser = await User.findOne({
+            email: payload.email
+        });
+        res.status(200).send({data: foundUser});
     } catch (error) {
         next(error);
     }

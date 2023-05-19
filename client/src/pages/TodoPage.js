@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import TodoList from '../components/TodoList';
 import { getTasks, createTask } from '../api/taskApi';
+import { authUser } from '../api/userApi';
 import { useNavigate } from 'react-router-dom';
 import ToDoForm from '../components/TodoForm';
 
@@ -10,16 +11,31 @@ const TodoPage = (props) => {
 
     useEffect(() => {
         if(!props.user) {
-            return navigate('/');
-        }
-        getTasks(props.user._id)
-        .then(result => {
+            // return navigate('/');
+            const token = localStorage.getItem('token');
+
+            if(token) {
+                authUser(token)
+                .then(userData => {
+                    props.sendUser(userData.data);
+                }).catch(error => {
+                    return navigate('/');
+                })
+            } else {
+                return navigate('/');
+            }
+        } else {
+            getTasks(props.user._id)
+            .then(result => {
             setTodos(result.data);
-        })
-        .catch(error => {
+             })
+            .catch(error => {
             console.error(error);
-        })
-    }, []);
+            })
+        }
+
+        
+    }, [props.user]);
 
     const getNewTd = (data) => {
         createTask({

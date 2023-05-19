@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home sendUser={setUser} />}/>
         {/* localhost:3000/ -> Home component */}
-        <Route path="/tasks/" element={<TodoPage user={user} />}/>
+        <Route path="/tasks/" element={<TodoPage user={user} sendUser={setUser} />}/>
         {/* localhost:3000/tasks/ -> TodoPage component */}
       </Routes>
     </BrowserRouter>
