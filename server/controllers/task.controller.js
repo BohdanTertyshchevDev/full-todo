@@ -17,7 +17,8 @@ module.exports.getAllUserTasks = async(req, res, next) => {
 module.exports.createUserTask = async (req, res, next) => {
     try {
         const {body, tokenPayload: {userId}} = req;
-        const task = await Task.create({...body, userId});
+        const task = await Task.create({...body, 
+                                        authorId: userId});
         res.status(201).send({data: task});
     } catch (error) {
         next(error);

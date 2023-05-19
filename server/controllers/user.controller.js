@@ -38,7 +38,7 @@ module.exports.checkToken = async(req, res, next) => {
     try {
         const {tokenPayload: {email}} = req;
         const foundUser = await User.findOne({
-            email: payload.email
+            email: email
         });
         res.status(200).send({data: foundUser});
     } catch (error) {
