@@ -10,32 +10,14 @@ const TodoPage = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(!props.user) {
-            // return navigate('/');
-            const token = localStorage.getItem('token');
-
-            if(token) {
-                authUser(token)
-                .then(userData => {
-                    props.sendUser(userData.data);
-                }).catch(error => {
-                    return navigate('/');
-                })
-            } else {
-                return navigate('/');
-            }
-        } else {
-            getTasks(props.user._id)
+            getTasks()
             .then(result => {
             setTodos(result.data);
              })
             .catch(error => {
             console.error(error);
             })
-        }
-
-        
-    }, [props.user]);
+    }, []);
 
     const getNewTd = (data) => {
         createTask({
