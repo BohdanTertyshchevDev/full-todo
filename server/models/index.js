@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = require('./User');
 const { DB } = require('../configs/db');
 const Task = require('./Task');
+const RefreshToken = require('./RefreshToken');
 
 mongoose.connect(DB)
 .catch(err => {
@@ -10,5 +11,5 @@ mongoose.connect(DB)
 });
 
 module.exports = {
-    User, Task
+    User, Task, RefreshToken
 }

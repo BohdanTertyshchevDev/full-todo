@@ -1,12 +1,14 @@
-const { User } = require("../models");
+const { User, RefreshToken } = require("../models");
 const bcrypt = require('bcrypt');
 const NotFoundError = require('../errors/NotFound');
-const {createToken, verifyToken} = require('../services/tokenService');
+const {createAccessToken, verifyAccessToken, createRefreshToken, verifyRefreshToken} = require('../services/tokenService');
+const RefreshTokenError = require("../errors/RefreshTokenError");
 
 module.exports.registrationUser = async(req, res, next) => {
     try {
         const {body, passwordHash} = req;
         const createdUser = await User.create({...body, passwordHash});
+        const token = await createAccessToken({userId: createdUser._id, email: createdUser.email});
         res.status(200).send({data: createdUser, tokens: {token}});
     } catch (error) {
         next(error);
@@ -24,8 +26,15 @@ module.exports.loginUser = async(req, res, next) => {
             if(!result) {
                 throw new NotFoundError('Incorrect password');
             }
-            const token = await createToken({userId: foundUser._id, email: foundUser.email});
-            res.status(200).send({data: foundUser, tokens: {token}})
+            const accessToken = await createAccessToken({userId: foundUser._id, email: foundUser.email});
+            const refreshToken =  await createRefreshToken({userId: foundUser._id, email: foundUser.email});
+
+            const addedToken = await RefreshToken.create({
+                token: refreshToken,
+                userId: foundUser._id
+            })
+
+            res.status(200).send({data: foundUser, tokens: {accessToken, refreshToken}});
         } else {
             throw new NotFoundError('Incorrect email');
         }
@@ -42,6 +51,44 @@ module.exports.checkAuth = async(req, res, next) => {
         });
         res.status(200).send({data: foundUser});
     } catch (error) {
+        next(error);
+    }
+}
+
+module.exports.refreshSession = async (req, res, next) => {
+    const {body: {refreshToken}} = req;
+    let verifyResult;
+    
+    try {
+        verifyResult = await verifyRefreshToken(refreshToken);
+    } catch (error) {
+        next(new RefreshTokenError('Invalid refresh token'));
+    }
+    
+    try {
+        if(verifyResult) {
+            const foundUser = await User.findOne({email: verifyResult.email});
+            const rTFromDB = await RefreshToken.findOne({$and: [{token: refreshToken}, {userId: user._id}]});
+            if (rTFromDB) {
+                const removeResult = await rTFromDB.remove();
+                const newAccessToken = await createAccessToken({userId: foundUser._id, email: foundUser.email});
+                const newRefreshToken = await createRefreshToken({userId: foundUser._id, email: foundUser.email});
+                const addedToken = await RefreshToken.create({
+                    token: refreshToken,
+                    userId: foundUser._id
+                })
+            }
+
+
+            
+            res.status(200).send({tokens: {
+                accessToken: newAccessToken,
+                refreshToken: newRefreshToken
+            }})
+        } else {
+            res.status(401).send({error: 'Invalid token'});
+        }
+    } catch(error) {
         next(error);
     }
 }
