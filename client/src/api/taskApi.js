@@ -44,3 +44,27 @@ export const createTask = async (data) => {
 
     return responce.json();
 }
+
+
+
+export const deleteTask = async(taskId) => {
+    const accessToken = localStorage.getItem('accessToken');
+    const responce = await fetch(`${CONSTANTS.API_BASE}/tasks/${taskId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    });
+    
+    if(responce.status === 400) {
+        const error = await responce.json();
+        return Promise.reject(error);
+    }
+    if(responce.status === 403) {
+        await refreshSession();
+        return await deleteTask(taskId);
+    }
+
+    return responce.json();
+}
