@@ -1,4 +1,4 @@
-const { User, RefreshToken } = require("../models");
+const { User, RefreshToken, Task } = require("../models");
 const bcrypt = require('bcrypt');
 const NotFoundError = require('../errors/NotFound');
 const {createAccessToken, verifyAccessToken, createRefreshToken, verifyRefreshToken} = require("../services/tokenService");
@@ -105,3 +105,4 @@ module.exports.refreshSession = async (req, res, next) => {
         next(error);
     }
 }
+

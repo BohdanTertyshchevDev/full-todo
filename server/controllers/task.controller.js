@@ -24,3 +24,17 @@ module.exports.createUserTask = async (req, res, next) => {
         next(error);
     }
 }
+
+module.exports.deleteTask = async (req, res, next) => {
+    try {
+        const {params: {taskId}, tokenPayload: {userId}} = req;
+        const deleteTask = await Task.findByIdAndRemove({authorId: userId, _id: taskId});
+        if(deleteTask) {
+            res.status(200).send({data: deleteTask});
+        } else {
+            res.status(404).send({error: 'Task not found'});
+        }
+    } catch (error) {
+        next(error);
+    }
+}
