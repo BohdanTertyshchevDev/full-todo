@@ -13,10 +13,9 @@ export const getTasks = async () => {
         const error = await responce.json();
         return Promise.reject(error);
     }
-
     if(responce.status === 403) {
         const error = await responce.json();
-        history.push('/');
+        history.push('/')
         return Promise.reject(error);
     }
 
@@ -38,13 +37,11 @@ export const createTask = async (data) => {
         const error = await responce.json();
         return Promise.reject(error);
     }
-
     if(responce.status === 403) {
         const error = await responce.json();
-        history.push('/');
+        history.push('/')
         return Promise.reject(error);
     }
-
 
     return responce.json();
 }

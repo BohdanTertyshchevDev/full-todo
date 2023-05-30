@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import TodoList from '../components/TodoList';
 import { getTasks, createTask } from '../api/taskApi';
-import { authUser } from '../api/userApi';
+import {authUser} from '../api/userApi';
 import { useNavigate } from 'react-router-dom';
 import ToDoForm from '../components/TodoForm';
 
@@ -12,10 +12,10 @@ const TodoPage = (props) => {
     useEffect(() => {
             getTasks()
             .then(result => {
-            setTodos(result.data);
-             })
+                setTodos(result.data);
+            })
             .catch(error => {
-            console.error(error);
+                console.error(error);
             })
     }, []);
 

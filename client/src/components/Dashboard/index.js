@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import TodoPage from '../../pages/TodoPage';
 
 const Dashboard = (props) => {
-    const [todo, setTodos] = useState;
+    const [todo, setTodos] = useState(false); // для того, щоб розуміти чи є в нас юзер чи ні
     const navigate = useNavigate();
 
     useEffect(() => {
         if(!props.user) {
             const token = localStorage.getItem('token');
             if(token) {
+                // робимо запит на отримання юзера
                 authUser(token)
                 .then(userData => {
                     props.sendUser(userData.data);
@@ -21,13 +22,14 @@ const Dashboard = (props) => {
                 navigate('/');
             }
         } else {
-            setTodos(true);
+            setTodos(true); // це значить, що юзер в нас є -> вантажимо для нього тудушки
         }
     }, [props.user])
 
+    // якщо юзер є, то показуємо TodoPage
     return (
         <>
-            {todo ? <TodoPage /> : null}   
+            {todo ? <TodoPage /> : null}
         </>
     );
 }

@@ -18,6 +18,7 @@ const refreshTokenSchema = new Schema({
         type: String
     }
 })
+// we can add info about devices
 
 const RefreshToken = mongoose.model('RefreshToken', refreshTokenSchema);
 
