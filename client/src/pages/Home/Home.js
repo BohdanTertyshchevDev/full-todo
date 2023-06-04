@@ -30,8 +30,8 @@ const Home = (props) => {
     const getData = ({callback, values}) => {
         //setData(userData);
         callback(values)
-            .then(result => {
-                props.sendUser(result.data);
+            .then(({data: {data}}) => {
+                props.sendUser(data);
                 // token -> localStorage
                 navigate('/tasks');
             })

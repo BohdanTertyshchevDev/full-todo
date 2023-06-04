@@ -32,7 +32,7 @@ export const loginUser = async(userInput) => {
         return Promise.reject(error);
     }
 
-    const {data, tokens} = await res.json();
+    const {data, tokens} = await res.json(); // {data: {}, tokens: {}}
     localStorage.setItem('accessToken', tokens.accessToken);
     localStorage.setItem('refreshToken', tokens.refreshToken);
 
@@ -73,11 +73,10 @@ export const authUser = async () => {
         if(res.status === 403) {
             await refreshSession();
         } else {
-            return res.json();
+            return res.json()
         }
-        
+    
     } else {
         history.replace('/');
     }
 }
-

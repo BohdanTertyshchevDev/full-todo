@@ -45,8 +45,6 @@ export const createTask = async (data) => {
     return responce.json();
 }
 
-
-
 export const deleteTask = async(taskId) => {
     const accessToken = localStorage.getItem('accessToken');
     const responce = await fetch(`${CONSTANTS.API_BASE}/tasks/${taskId}`, {
