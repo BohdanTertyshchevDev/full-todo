@@ -1,31 +1,24 @@
 import React, {useReducer} from 'react';
 import {connect} from 'react-redux';
+import { incrementAction, decrementAction } from './actions/actionCreater';
 
 
 const Counter = (props) => {
+    // const increment = () => {
+    //     props.dispatch(createActionIncrement());
+    // }
 
-
-    const increment = () => {
-        const action = {
-            type: 'COUNTER_PLUS'
-        }
-        props.dispatch(action);
-    }
-
-    const decrement = () => {
-        const action = {
-            type: 'COUNTER_MINUS'
-        }
-        props.dispatch(action);
-    }
+    // const decrement = () => {
+    //     props.dispatch(createActionDecrement());
+    // }
     console.log(props);
 
 
     return (
         <>
             <h1>{props.counter}</h1>
-            <button onClick={increment}>+</button>
-            <button onClick={decrement}>-</button>
+            <button onClick={props.increment}>+</button>
+            <button onClick={props.decrement}>-</button>
         </>
     );
 }
@@ -35,7 +28,22 @@ const mapStateToProps = (state) => {
     return state
 }
 
-const WrappedCounter = connect(mapStateToProps)(Counter);
+
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         increment: () => dispatch(createActionIncrement()),
+//         decrement: () => dispatch(createActionDecrement())
+//     }
+// }
+
+
+const mapDispatchToProps = {
+    increment: incrementAction,
+    decrement: decrementAction
+}
+
+
+const WrappedCounter = connect(mapStateToProps, mapDispatchToProps)(Counter);
 
 
 
