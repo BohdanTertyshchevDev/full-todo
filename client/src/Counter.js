@@ -1,6 +1,6 @@
 import React, {useReducer} from 'react';
 import {connect} from 'react-redux';
-import { incrementAction, decrementAction, changeStepAction } from './actions/actionCreater';
+import { incrementAction, decrementAction, changeStepAction, requestCounterFetching } from './actions/actionCreater';
 
 
 const Counter = (props) => {
@@ -17,12 +17,18 @@ const Counter = (props) => {
         props.changeStep(Number(value));
     }
 
+    const onClickHandler = () => {
+        props.requestFetching(props.counter);
+    }
+
     return (
         <>
             <h1>{props.counter}</h1>
             <input type='number' name='step' onChange={onChangeStep} value={props.step} />
             <button onClick={props.increment}>+</button>
             <button onClick={props.decrement}>-</button>
+
+            <button onClick={onClickHandler}>Send counter value to backend</button>
         </>
     );
 }
@@ -44,7 +50,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     increment: incrementAction,
     decrement: decrementAction,
-    changeStep: changeStepAction
+    changeStep: changeStepAction,
+    requestFetching: requestCounterFetching
 }
 
 
