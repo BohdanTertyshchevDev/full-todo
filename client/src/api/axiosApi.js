@@ -10,6 +10,12 @@ const instance = axios.create({
 
 export const registerUser = async(userData) => await instance.post('/users/sign-up', userData);
 export const loginUser = async(userData) => await instance.post('/users/sign-in', userData);
+export const authUser = async() => await instance.get('/users');
+
+
+export const logOut = async() => {
+    localStorage.clear();
+}
 
 /* Task Api */
 

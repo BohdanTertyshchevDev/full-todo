@@ -4,32 +4,33 @@ import Home from './pages/Home/Home';
 import TodoPage from './pages/TodoPage';
 import './App.css';
 import history from './BrowserHistory';
-import {authUser} from './api/userApi';
+import {connect} from 'react-redux';
+import { authUserRequest } from './actions/actionCreator';
 
-function App() {
-  const [user, setUser] = useState(null);
-
+function App(props) {
   useEffect(() => {
-    // if(!user) {
-    //       authUser()
-    //       .then(userData => {
-    //           setUser(userData.data);
-    //       }).catch(error => {
-    //           history.push('/');
-    //       })
-    //   }
+    if(!props.user) {
+      props.authUserRequest();
+    }
 }, [])
 
   return (
     <HistoryRouter history={history}>
       <Routes>
-        <Route path="/" element={<Home sendUser={setUser} />}/>
+        <Route path="/" element={<Home />}/>
         {/* localhost:3000/ -> Home component */}
-        <Route path="/tasks/" element={<TodoPage user={user} />}/>
+        <Route path="/tasks/" element={<TodoPage />}/>
         {/* localhost:3000/tasks/ -> TodoPage component */}
       </Routes>
     </HistoryRouter>
   );
 }
 
-export default App;
+
+const mapStateToProps = ({user}) => ({user});
+
+const mapDispatchToProps = {
+  authUserRequest
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
