@@ -44,13 +44,16 @@ instance.interceptors.response.use((response) => {
     return response;
 }, (err) => {
     if(err.response.status === 403 && localStorage.getItem('refreshToken')) {
-        refreshUser()
+        return refreshUser().then(() => {
+            return instance(err.config);
+        })
     }
-    if(err.response.status === 401) {
+    else if(err.response.status === 401) {
+        logOut();
         history.replace('/');
+    } else {
+        return Promise.reject(err);
     }
-
-    return Promise.reject(err);
 })
 
 export const refreshUser = async () => {
