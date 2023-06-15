@@ -18,6 +18,7 @@ export function* registerSaga(action) {
     try {
         const {data: {data}} = yield registerUser(action.payload);
         yield put(registerUserSuccess(data));
+        history.push('/tasks');
     } catch (error) {
         yield put(registerUserError(error.response.data.error));
     }

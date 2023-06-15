@@ -8,8 +8,9 @@ module.exports.registrationUser = async(req, res, next) => {
     try {
         const {body, passwordHash} = req;
         const createdUser = await User.create({...body, passwordHash});
-        const token = await createAccessToken({userId: createdUser._id, email: createdUser.email});
-        res.status(200).send({data: createdUser, tokens: {token}});
+        const accessToken = await createAccessToken({userId: createdUser._id, email: createdUser.email});
+        const refreshToken = await createRefreshToken({userId: createdUser._id, email: createdUser.email});
+        res.status(200).send({data: createdUser, tokens: {accessToken, refreshToken}});
     } catch (error) {
         next(error);
     }
