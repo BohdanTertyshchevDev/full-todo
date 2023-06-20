@@ -68,6 +68,14 @@ const reducer = (state = initialState, action) => {
         }
       }
 
+      case 'NOTIFICATION' : {
+        const {data} = action;
+        return {
+          ...state,
+          notification: data
+        }
+      }
+
       default: {
         return state;
       }
